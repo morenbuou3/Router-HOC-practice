@@ -5,6 +5,7 @@ import App from './App';
 import ArticleContainer from './ArticleContainer'
 import Tabs from './Tabs';
 import Tab from './Tab';
+import Client from './Client'
 import {BrowserRouter, Route, Link, Switch, Router} from 'react-router-dom';
 
 import registerServiceWorker from './registerServiceWorker';
@@ -32,6 +33,9 @@ const Home = () => {
             </tr>
         )}
         </tbody>
+    <tfoot>
+        <Link to='/404' >404</Link>
+    </tfoot>
     </table>)};
 
 const Product = ({match}) => {
@@ -48,18 +52,39 @@ const Product = ({match}) => {
             </div>
     )};
 
+const NoMatch = () => {
+    return (
+        <div>
+            404!
+        </div>
+    );
+};
+
 const Test = () => {
     return (
         <BrowserRouter>
-            <div>
-                <Route exact path="/" component={Home}/>
-                <Route path="/details/:id" component={Product}/>
-            </div>
+            <switch>
+                <Route exact path="/" render={(props) => {
+                    return (
+                        <div>
+                            <Home {...props}/>
+                        </div>
+                    );
+                }}/>
+                <Route path="/details/:id" render={(props) => {
+                    return (
+                        <div>
+                            <Product {...props}/>
+                        </div>
+                    );
+                }}/>
+                <Route component={NoMatch} />
+            </switch>
         </BrowserRouter>
     );
 };
 
 ReactDOM.render((
-    <Test/>
+    <Client/>
 ), document.getElementById('root'));
 registerServiceWorker();
